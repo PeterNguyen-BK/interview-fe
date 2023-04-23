@@ -8,9 +8,11 @@ export const useSocket = (serverUrl: string) => {
     const [socket, setSocket] = useState<socketIO.Socket | null>(null)
     console.log(socket, "socket check ")
 
-    useEffect(() => {   
-        const _socket = socketIO.io(serverUrl);
-        setSocket(_socket);
+    useEffect(() => {
+        if (socket === null) {
+            const _socket = socketIO.io(serverUrl);
+            setSocket(_socket);
+        }
         socket?.on("connect", () => setConnected(true));
         socket?.on("disconnect", () => setConnected(false));
         return () => { socket?.disconnect() }
